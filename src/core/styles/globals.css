@@ -1,0 +1,15 @@
+/* styles/globals.css */
+@font-face {
+  font-family: "Galindo";
+  src: url("/fonts/Galindo-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Optionally include Poppins font as well */
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
