@@ -1,12 +1,10 @@
 import { BaseContainer } from "@/shared/components/container";
-import PokeList from "../components/pokelist";
-import PokeHeader from "../components/pokeheader";
+import ItemList from "../components/itemlist";
+import ItemHeader from "../components/itemheader";
 
-const PokemonPage = () => {
+const ItemPage = () => {
   return (
     <>
-      {/* <Typography variant="h1">TESTING</Typography> */}
-      {/* <ConfirmModal></ConfirmModal> */}
       <BaseContainer
         height={"100%"}
         width={"100%"}
@@ -16,11 +14,11 @@ const PokemonPage = () => {
         overflow={"auto"}
         gap={"1rem"}
       >
-        <PokeHeader />
-        <PokeList />
+        <ItemHeader />
+        <ItemList />
       </BaseContainer>
     </>
   );
 };
 
-export default PokemonPage;
+export default ItemPage;

@@ -1,5 +1,5 @@
 import { Box, IconButton, Modal, Typography } from "@mui/material";
-import { BaseContainer } from "./BaseContainer";
+import { BaseContainer } from "./container";
 import { ReactNode } from "react";
 import { color } from "../constant/color";
 import { XMarkIcon } from "@heroicons/react/24/outline";

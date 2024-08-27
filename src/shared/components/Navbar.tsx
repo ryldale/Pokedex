@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BaseContainer } from "./BaseContainer";
+import { BaseContainer } from "./container";
 import {
   Box,
   Button,
@@ -8,17 +8,32 @@ import {
   Typography,
 } from "@mui/material";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { color } from "../constant/color";
 
 const Navbar = () => {
   return (
-    <BaseContainer>
+    <BaseContainer
+      display={"flex"}
+      padding={"14px 16px"}
+      alignItems={"center"}
+      justifyContent={"space-between"}
+      marginBottom={'24px'}
+    >
       <Box>
         <Image src="/img/Logo.png" alt="pokemon-logo" width={122} height={46} />
       </Box>
       <Box>
         <ListItem>
-          <ListItemButton>Pokemon</ListItemButton>
-          <ListItemButton>Items</ListItemButton>
+          <ListItemButton
+            sx={{ background: color.bgPrimary, marginRight: "8px" }}
+          >
+            Pokemon
+          </ListItemButton>
+          <ListItemButton
+            sx={{ background: color.bgPrimary, marginLeft: "8px" }}
+          >
+            Items
+          </ListItemButton>
         </ListItem>
       </Box>
       <Box>
