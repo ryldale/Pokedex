@@ -1,6 +1,6 @@
 import { MUITheme } from "@/core/providers/ThemeProvider";
 import { CssBaseline } from "@mui/material";
-import '../core/styles/globals.css'
+import "../core/styles/globals.css";
 
 export default function RootLayout({
   children,
@@ -9,7 +9,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body
+        style={{
+          backgroundImage: `url('/img/Background.png')`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          margin: 0,
+          height: "100vh",
+          padding: "40px 32px 24px 32px",
+        }}
+      >
         <CssBaseline />
         <MUITheme>{children}</MUITheme>
       </body>

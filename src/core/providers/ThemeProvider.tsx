@@ -3,6 +3,7 @@
 import React, { ReactNode } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { MainTheme } from "../theme/main";
+import Navbar from "@/shared/components/Navbar";
 
 type PropType = {
   children: ReactNode;
@@ -10,5 +11,10 @@ type PropType = {
 
 export const MUITheme = ({ children }: PropType) => {
   const theme = createTheme(MainTheme);
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <Navbar />
+      {children}
+    </ThemeProvider>
+  );
 };

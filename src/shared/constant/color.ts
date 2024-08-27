@@ -1,6 +1,3 @@
-import { light } from "@mui/material/styles/createPalette";
-import { error } from "console";
-
 export const color = {
     primary: '#2B2F67',
     bgPrimary: '#FBD743',
@@ -15,6 +12,6 @@ export const color = {
     lightBlue: '#DCF0FF',
     lightRed: '#FFF2F2',
     lightGreen: '#E7F7E0',
-    lightOrange: '#FFF4DE',
+    lightYellow: '#FFF4DE',
   };
    

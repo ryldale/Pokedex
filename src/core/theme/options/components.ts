@@ -12,7 +12,7 @@ export const component: Components<Omit<Theme, "components">> = {
         color: color.n1,
 
         "&.MuiButton-containedPrimary": {
-          background: color.bgPrimary,
+          background: color.primary,
         },
 
         "&:disabled": {
