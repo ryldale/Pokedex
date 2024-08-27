@@ -1,12 +1,11 @@
 import { BaseContainer } from "@/shared/components/container";
 import ItemList from "../components/itemlist";
-import ItemHeader from "../components/itemheader";
+import Header from "@/shared/components/header";
 
 const ItemPage = () => {
   return (
     <>
       <BaseContainer
-        height={"100%"}
         width={"100%"}
         display={"flex"}
         padding={"1.5rem 1rem"}
@@ -14,7 +13,10 @@ const ItemPage = () => {
         overflow={"auto"}
         gap={"1rem"}
       >
-        <ItemHeader />
+        <Header
+          title={"List of Pokémons"}
+          caption={"Complete Pokémon list"}
+        />
         <ItemList />
       </BaseContainer>
     </>

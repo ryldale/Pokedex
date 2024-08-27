@@ -1,12 +1,17 @@
+"use client"
 import { MUITheme } from "@/core/providers/ThemeProvider";
 import { CssBaseline } from "@mui/material";
 import "../core/styles/globals.css";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isFavoritesPage = pathname === "/favorites";
+
   return (
     <html lang="en">
       <body
@@ -21,7 +26,7 @@ export default function RootLayout({
         }}
       >
         <CssBaseline />
-        <MUITheme>{children}</MUITheme>
+        <MUITheme hideNavbar={isFavoritesPage}>{children}</MUITheme>
       </body>
     </html>
   );

@@ -7,13 +7,14 @@ import Navbar from "@/shared/components/Navbar";
 
 type PropType = {
   children: ReactNode;
+  hideNavbar?: boolean;
 };
 
-export const MUITheme = ({ children }: PropType) => {
+export const MUITheme = ({ children, hideNavbar = false }: PropType) => {
   const theme = createTheme(MainTheme);
   return (
     <ThemeProvider theme={theme}>
-      <Navbar />
+      {!hideNavbar && <Navbar />}
       {children}
     </ThemeProvider>
   );

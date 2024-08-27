@@ -19,10 +19,10 @@ const Navbar = () => {
       justifyContent={"space-between"}
       marginBottom={"24px"}
     >
-      <Box>
+      <Box display={"flex"} justifyContent={"center"}>
         <Image src="/img/Logo.png" alt="pokemon-logo" width={122} height={46} />
       </Box>
-      <Box>
+      <Box display={"flex"} justifyContent={"center"}>
         <ListItem>
           <ListItemButton style={{ marginRight: "16px" }}>
             <Typography variant="h3">Pokémons</Typography>
@@ -32,7 +32,7 @@ const Navbar = () => {
           </ListItemButton>
         </ListItem>
       </Box>
-      <Box>
+      <Box display={"flex"} justifyContent={"center"}>
         <Button variant="text">
           <StarIcon
             width={"1.5rem"}
