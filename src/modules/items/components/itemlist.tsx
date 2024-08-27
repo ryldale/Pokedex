@@ -17,6 +17,7 @@ import { color } from "@/shared/constant/color";
 import { ItemHeader, Items } from "../constant/items-header_table";
 import { MouseEvent, useState } from "react";
 import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/solid";
+import ItemRow from "./item-row";
 
 const ItemList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -42,37 +43,8 @@ const ItemList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>
-                  <img
-                    src={item.sprite}
-                    alt={item.name}
-                    width={50}
-                    height={50}
-                  />
-                </TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.effect}</TableCell>
-                <TableCell>
-                  <IconButton onClick={handleClick}>
-                    <EllipsisHorizontalCircleIcon
-                      width={"1.5rem"}
-                      height={"1.5rem"}
-                    />
-                  </IconButton>
-                  <Menu
-                    id="pokemon-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={handleClose}>Action 1</MenuItem>
-                    <MenuItem onClick={handleClose}>Action 2</MenuItem>
-                    <MenuItem onClick={handleClose}>Action 3</MenuItem>
-                  </Menu>
-                </TableCell>
-              </TableRow>
+            {Items.map((item, index) => (
+              <ItemRow key={index} item={item} />
             ))}
           </TableBody>
         </Table>
@@ -88,14 +60,13 @@ const ItemList = () => {
           justifyContent={"flex-start"}
           alignItems={"center"}
         >
-          <Typography variant="caption" color={color.n4}>
+          <Typography variant="caption" color={color.primary}>
             {`Showing ${`1`}  to ${`10`} of ${`100`} results`}
           </Typography>
         </Box>
         <Pagination
           count={10}
           page={1}
-          color="primary"
           //   onChange={PageHandler}
         />
       </Box>
