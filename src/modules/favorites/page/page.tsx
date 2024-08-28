@@ -2,6 +2,7 @@ import { BaseContainer } from "@/shared/components/container";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { Box, Button, Typography } from "@mui/material";
 import Header from "@/shared/components/header";
+import FavoriteList from "../components/favoritelist";
 
 const FavoritePage = () => {
   return (
@@ -23,16 +24,18 @@ const FavoritePage = () => {
         </Box>
       </BaseContainer>
       <BaseContainer
+        width={"100%"}
         display={"flex"}
-        padding={"14px 16px"}
-        alignItems={"center"}
-        justifyContent={"space-between"}
-        marginBottom={"24px"}
+        padding={"1.5rem 1rem"}
+        flexDirection={"column"}
+        overflow={"auto"}
+        gap={"1rem"}
       >
         <Header
           title={"List of Favorites"}
           caption={"Explore your Pokémon favorites"}
         />
+        <FavoriteList />
       </BaseContainer>
     </>
   );

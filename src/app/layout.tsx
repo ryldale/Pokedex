@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { MUITheme } from "@/core/providers/ThemeProvider";
 import { CssBaseline } from "@mui/material";
 import "../core/styles/globals.css";
@@ -10,7 +10,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const isFavoritesPage = pathname === "/favorites";
+  const hideNavbar =
+    pathname === "/favorites" || pathname.startsWith("/pokemons/");
 
   return (
     <html lang="en">
@@ -26,7 +27,7 @@ export default function RootLayout({
         }}
       >
         <CssBaseline />
-        <MUITheme hideNavbar={isFavoritesPage}>{children}</MUITheme>
+        <MUITheme hideNavbar={hideNavbar }>{children}</MUITheme>
       </body>
     </html>
   );
