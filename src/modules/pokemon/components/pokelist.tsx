@@ -20,8 +20,13 @@ import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/solid";
 import { MouseEvent, useState } from "react";
 import ActionMenu from "@/shared/components/action";
 import PokemonRow from "./pokemon-row";
+import { PokemonInitStateType } from "../reducer/pokemon_init";
 
-const PokeList = () => {
+type propType = {
+  state: PokemonInitStateType;
+};
+
+const PokeList = ({ state }: propType) => {
   return (
     <>
       <TableContainer>
