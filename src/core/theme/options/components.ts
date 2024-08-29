@@ -38,12 +38,12 @@ export const component: Components<Omit<Theme, "components">> = {
       root: {
         padding: "0.8rem 1rem",
         textTransform: "unset",
-        border: `1px solid ${color.primary}`,
-        background: color.bgPrimary,
+        background: "tranparent",
         color: color.primary,
-        "&:disabled": {
-          backgroundColor: color.n2,
-          color: color.n3,
+        "&.Mui-selected": {
+          backgroundColor: color.bgPrimary,
+          color: color.primary,
+          border: `1px solid ${color.primary}`,
         },
       },
     },

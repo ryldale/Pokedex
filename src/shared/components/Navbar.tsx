@@ -8,9 +8,18 @@ import {
   Typography,
 } from "@mui/material";
 import { StarIcon } from "@heroicons/react/24/solid";
-import { color } from "../constant/color";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const isActive = (path: string): boolean => pathname === path;
+
+  const handleNavigate = (path: string) => () => {
+    router.push(path);
+  };
+
   return (
     <BaseContainer
       display={"flex"}
@@ -24,16 +33,23 @@ const Navbar = () => {
       </Box>
       <Box display={"flex"} justifyContent={"center"}>
         <ListItem>
-          <ListItemButton style={{ marginRight: "16px" }}>
+          <ListItemButton
+            style={{ marginRight: "16px" }}
+            selected={isActive("/pokemons")}
+            onClick={handleNavigate("/pokemons")}
+          >
             <Typography variant="h3">Pokémons</Typography>
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton
+            selected={isActive("/items")}
+            onClick={handleNavigate("/items")}
+          >
             <Typography variant="h3">Items</Typography>
           </ListItemButton>
         </ListItem>
       </Box>
       <Box display={"flex"} justifyContent={"center"}>
-        <Button variant="text">
+        <Button variant="text" onClick={handleNavigate("/favorites")}>
           <StarIcon
             width={"1.5rem"}
             height={"1.5rem"}
