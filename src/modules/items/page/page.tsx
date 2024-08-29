@@ -11,8 +11,13 @@ const ItemPage = () => {
   const [state, dispatch] = useReducer(ItemReducer, ItemInitState);
 
   useEffect(() => {
-    ItemInitData(dispatch);
+    ItemInitData(dispatch, `item?limit=10&offset=0`);
   }, []);
+
+  const handlePageChange = (page: number) => {
+    const offset = (page - 1) * 10;
+    ItemInitData(dispatch, `item?limit=10&offset=${offset}`);
+  };
 
   return (
     <>
@@ -28,7 +33,7 @@ const ItemPage = () => {
           title={"List of Pokémons Items"}
           caption={"Complete Pokémon item list"}
         />
-        <ItemList state={state} />
+        <ItemList state={state} onPageChange={handlePageChange}/>
       </BaseContainer>
     </>
   );

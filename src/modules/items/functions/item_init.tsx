@@ -4,9 +4,12 @@ import axios, { AxiosResponse } from "axios";
 import { Dispatch } from "react";
 import { Item } from "../reducer/item_init";
 
-export const ItemInitData = (dispatch: Dispatch<ReducerActionType>) => {
+export const ItemInitData = (
+  dispatch: Dispatch<ReducerActionType>,
+  url: string
+) => {
   pokemonAPI
-    .get(`item?limit=${"10"}&offset=${"0"}`)
+    .get(url)
     .then((res: AxiosResponse) => {
       console.log(res.data);
       dispatch({ type: "ITEM_DATA", data: { axiosData: res } });

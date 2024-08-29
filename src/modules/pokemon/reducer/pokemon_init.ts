@@ -7,7 +7,7 @@ export const PokemonInitState: PokemonInitStateType = {
 };
 
 export type PokemonInitStateType = {
-  count: Number;
+  count: number;
   next: string;
   previous: string;
   result: Pokemon[];

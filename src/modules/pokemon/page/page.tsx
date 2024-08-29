@@ -11,8 +11,13 @@ const PokemonPage = () => {
   const [state, dispatch] = useReducer(PokemonReducer, PokemonInitState);
 
   useEffect(() => {
-    PokemonInitData(dispatch);
+    PokemonInitData(dispatch, `pokemon?limit=10&offset=0`);
   }, []);
+
+  const handlePageChange = (page: number) => {
+    const offset = (page - 1) * 10;
+    PokemonInitData(dispatch, `pokemon?limit=10&offset=${offset}`);
+  };
 
   return (
     <>
@@ -24,11 +29,8 @@ const PokemonPage = () => {
         overflow={"auto"}
         gap={"1rem"}
       >
-        <Header
-          title={"List of Pokemon"}
-          caption={"Complete Pokémon list"}
-        />
-        <PokeList state={state} />
+        <Header title={"List of Pokemon"} caption={"Complete Pokémon list"} />
+        <PokeList state={state} onPageChange={handlePageChange} />
       </BaseContainer>
     </>
   );

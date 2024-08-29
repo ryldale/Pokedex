@@ -7,7 +7,7 @@ export const ItemInitState: ItemInitStateType = {
 };
 
 export type ItemInitStateType = {
-  count: Number;
+  count: number;
   next: string;
   previous: string;
   result: Item[];

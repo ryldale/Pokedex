@@ -4,10 +4,12 @@ import axios, { AxiosResponse } from "axios";
 import { Dispatch } from "react";
 import { Pokemon } from "../reducer/pokemon_init";
 
-
-export const PokemonInitData = (dispatch: Dispatch<ReducerActionType>) => {
+export const PokemonInitData = (
+  dispatch: Dispatch<ReducerActionType>,
+  url: string
+) => {
   pokemonAPI
-    .get(`pokemon?limit=${"10"}&offset=${"0"}`)
+    .get(url)
     .then((res: AxiosResponse) => {
       console.log(res.data);
       dispatch({ type: "POKEMON_DATA", data: { axiosData: res } });
