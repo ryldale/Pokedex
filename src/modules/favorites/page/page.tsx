@@ -1,10 +1,13 @@
+"use client"
 import { BaseContainer } from "@/shared/components/container";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { Box, Button, Typography } from "@mui/material";
 import Header from "@/shared/components/header";
 import FavoriteList from "../components/favoritelist";
+import { useRouter } from "next/navigation";
 
 const FavoritePage = () => {
+  const router = useRouter();
   return (
     <>
       <BaseContainer
@@ -15,7 +18,7 @@ const FavoritePage = () => {
         marginBottom={"24px"}
       >
         <Box display={"flex"} justifyContent={"center"}>
-          <Button variant="text">
+          <Button variant="text" onClick={() => router.back()}>
             <ChevronLeftIcon width={"1.5rem"} height={"1.5rem"} />
             <Typography variant="body1" sx={{ ml: 1 }}>
               BACK
