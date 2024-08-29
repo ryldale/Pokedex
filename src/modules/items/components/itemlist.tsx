@@ -16,10 +16,16 @@ import {
 import { color } from "@/shared/constant/color";
 import { ItemHeader, Items } from "../constant/items-header_table";
 import { MouseEvent, useState } from "react";
-import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/solid";
 import ItemRow from "./item-row";
+import { ItemInitStateType } from "../reducer/item_init";
 
-const ItemList = () => {
+type propType = {
+  state: ItemInitStateType;
+};
+
+const ItemList = ({ state }: propType) => {
+  console.log(state.detailedResults);
+  
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -43,7 +49,7 @@ const ItemList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Items.map((item, index) => (
+            {state.detailedResults.map((item, index) => (
               <ItemRow key={index} item={item} />
             ))}
           </TableBody>

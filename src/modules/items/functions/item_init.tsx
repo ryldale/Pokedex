@@ -2,24 +2,23 @@ import { pokemonAPI } from "@/core/api/api";
 import { ReducerActionType } from "@/shared/types/ReducerAction";
 import axios, { AxiosResponse } from "axios";
 import { Dispatch } from "react";
-import { Pokemon } from "../reducer/pokemon_init";
+import { Item } from "../reducer/item_init";
 
-
-export const PokemonInitData = (dispatch: Dispatch<ReducerActionType>) => {
+export const ItemInitData = (dispatch: Dispatch<ReducerActionType>) => {
   pokemonAPI
-    .get(`pokemon?limit=${"10"}&offset=${"0"}`)
+    .get(`item?limit=${"10"}&offset=${"0"}`)
     .then((res: AxiosResponse) => {
       console.log(res.data);
-      dispatch({ type: "POKEMON_DATA", data: { axiosData: res } });
+      dispatch({ type: "ITEM_DATA", data: { axiosData: res } });
 
-      const pokemonDetailsPromises = res.data.results.map((pokemon: Pokemon) =>
-        pokemonAPI.get(pokemon.url)
+      const itemDetailsPromises = res.data.results.map((item: Item) =>
+        pokemonAPI.get(item.url)
       );
 
-      Promise.all(pokemonDetailsPromises)
+      Promise.all(itemDetailsPromises)
         .then((responses) => {
           const detailedData = responses.map((response) => response.data);
-          dispatch({ type: "POKEMON_DETAILS_SUCCESS", data: detailedData });
+          dispatch({ type: "ITEM_DETAILS_SUCCESS", data: detailedData });
         })
         .catch((err) => {
           console.log(err);
