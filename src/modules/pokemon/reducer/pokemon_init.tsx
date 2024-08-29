@@ -3,14 +3,29 @@ export const PokemonInitState: PokemonInitStateType = {
   next: "",
   previous: "",
   result: [],
+  detailedResults: [],
 };
 
 export type PokemonInitStateType = {
   count: Number;
   next: string;
   previous: string;
-  result: {
-    name: string;
-    url: string;
-  }[];
+  result: Pokemon[];
+  detailedResults: PokemonDetails[];
+};
+
+export type Pokemon = {
+  name: string;
+  url: string;
+};
+
+export type Sprites = {
+  front_default: string;
+};
+
+export type PokemonDetails = {
+  id: number;
+  name: string;
+  sprites: Sprites;
+  weight: number;
 };

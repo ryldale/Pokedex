@@ -39,8 +39,8 @@ const PokeList = ({ state }: propType) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Pokemons.map((pokemon, index) => (
-              <PokemonRow key={index} pokemon={pokemon} />
+            {state.detailedResults.map((pokemon) => (
+              <PokemonRow key={pokemon.id} pokemon={pokemon} />
             ))}
           </TableBody>
         </Table>

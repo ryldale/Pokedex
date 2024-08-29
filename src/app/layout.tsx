@@ -22,7 +22,7 @@ export default function RootLayout({
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           margin: 0,
-          height: "100vh",
+          height: "100%",
           padding: "40px 32px 24px 32px",
         }}
       >

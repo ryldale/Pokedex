@@ -14,8 +14,8 @@ const ItemPage = () => {
         gap={"1rem"}
       >
         <Header
-          title={"List of Pokémons"}
-          caption={"Complete Pokémon list"}
+          title={"List of Pokémons Items"}
+          caption={"Complete Pokémon item list"}
         />
         <ItemList />
       </BaseContainer>

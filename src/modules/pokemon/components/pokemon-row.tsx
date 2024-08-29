@@ -3,9 +3,10 @@ import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/solid";
 import { IconButton, TableCell, TableRow } from "@mui/material";
 import React, { MouseEvent, useState } from "react";
 import { PokemonType } from "../types/pokemon-table_types";
+import { PokemonDetails } from "../reducer/pokemon_init";
 
 type propType = {
-  pokemon: PokemonType;
+  pokemon: PokemonDetails;
 };
 
 const PokemonRow = ({ pokemon }: propType) => {
@@ -24,7 +25,12 @@ const PokemonRow = ({ pokemon }: propType) => {
   return (
     <TableRow key={pokemon.id}>
       <TableCell>
-        <img src={pokemon.sprite} alt={pokemon.name} width={50} height={50} />
+        <img
+          src={pokemon.sprites.front_default}
+          alt={pokemon.name}
+          width={50}
+          height={50}
+        />
       </TableCell>
       <TableCell>{pokemon.name}</TableCell>
       <TableCell>{pokemon.weight}</TableCell>

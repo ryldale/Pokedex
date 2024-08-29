@@ -3,13 +3,16 @@ import { BaseContainer } from "@/shared/components/container";
 import PokeList from "../components/pokelist";
 import Header from "@/shared/components/header";
 import { PokemonInitData } from "../functions/pokemon_Init";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import PokemonReducer from "../reducer/pokemon_reducer";
 import { PokemonInitState } from "../reducer/pokemon_init";
 
 const PokemonPage = () => {
   const [state, dispatch] = useReducer(PokemonReducer, PokemonInitState);
-  PokemonInitData(dispatch);
+
+  useEffect(() => {
+    PokemonInitData(dispatch);
+  }, []);
 
   return (
     <>
@@ -22,8 +25,8 @@ const PokemonPage = () => {
         gap={"1rem"}
       >
         <Header
-          title={"List of Items"}
-          caption={"Complete Pokémon item list"}
+          title={"List of Pokemon"}
+          caption={"Complete Pokémon list"}
         />
         <PokeList state={state} />
       </BaseContainer>
