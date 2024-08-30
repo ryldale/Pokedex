@@ -14,7 +14,13 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const isActive = (path: string): boolean => pathname === path;
+  const isActive = (path: string): boolean => {
+    return (
+      pathname === path ||
+      (path === "/pokemons" &&
+        (pathname === "/" || pathname.startsWith("/pokemons")))
+    );
+  };
 
   const handleNavigate = (path: string) => () => {
     router.push(path);
