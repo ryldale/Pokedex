@@ -30,6 +30,10 @@ const ItemRow = ({ item }: propType) => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
+
+  const handleMarkAsFavotire = () => {
+    console.log("mark as favorite");
+  };
   const open = Boolean(anchorEl);
   const effect = item.effect_entries.map((effect) => effect.short_effect);
 
@@ -65,6 +69,7 @@ const ItemRow = ({ item }: propType) => {
           <ActionMenu
             anchorEl={anchorEl}
             open={open}
+            onMarkAsFavorite={handleMarkAsFavotire}
             handleClose={handleClose}
             onViewClick={handleViewClick}
           />

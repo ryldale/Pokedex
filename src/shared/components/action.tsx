@@ -9,9 +9,16 @@ type propType = {
   open: boolean;
   handleClose: () => void;
   onViewClick: () => void;
+  onMarkAsFavorite: () => void;
 };
 
-const ActionMenu = ({ anchorEl, open, handleClose, onViewClick }: propType) => {
+const ActionMenu = ({
+  anchorEl,
+  open,
+  handleClose,
+  onViewClick,
+  onMarkAsFavorite,
+}: propType) => {
   return (
     <Menu
       id="pokemon-menu"
@@ -19,7 +26,12 @@ const ActionMenu = ({ anchorEl, open, handleClose, onViewClick }: propType) => {
       open={open}
       onClose={handleClose}
     >
-      <MenuItem onClick={onViewClick}>
+      <MenuItem
+        onClick={() => {
+          onViewClick();
+          handleClose();
+        }}
+      >
         <ArrowTopRightOnSquareIcon
           width={"1.5rem"}
           height={"1.5rem"}
@@ -27,7 +39,12 @@ const ActionMenu = ({ anchorEl, open, handleClose, onViewClick }: propType) => {
         />
         View
       </MenuItem>
-      <MenuItem onClick={handleClose}>
+      <MenuItem
+        onClick={() => {
+          onMarkAsFavorite();
+          handleClose();
+        }}
+      >
         <StarIcon
           width={"1.5rem"}
           height={"1.5rem"}

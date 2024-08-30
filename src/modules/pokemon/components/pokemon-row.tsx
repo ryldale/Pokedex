@@ -25,6 +25,10 @@ const PokemonRow = ({ pokemon }: propType) => {
   const handleViewClick = () => {
     console.log("awit");
   };
+  
+  const handleMarkAsFavotire = () => {
+    console.log("mark as favorite");
+  };
 
   const open = Boolean(anchorEl);
 
@@ -56,6 +60,7 @@ const PokemonRow = ({ pokemon }: propType) => {
         <ActionMenu
           anchorEl={anchorEl}
           open={open}
+          onMarkAsFavorite={handleMarkAsFavotire}
           onViewClick={handleViewClick}
           handleClose={handleClose}
         />
