@@ -28,4 +28,19 @@ export type PokemonDetails = {
   name: string;
   sprites: Sprites;
   weight: number;
+  stats: BaseStats[];
+  abilities: Ability[];
+};
+
+export type BaseStats = {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+};
+
+export type Ability = {
+  ability: {
+    name: string;
+  };
 };

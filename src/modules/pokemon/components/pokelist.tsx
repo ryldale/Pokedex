@@ -40,8 +40,7 @@ const PokeList = ({ state, onPageChange }: propType) => {
     }
 
     const offset = parseInt(url.searchParams.get("offset") || "0", 10);
-    console.log(offset);
-    
+
     return Math.floor(offset / itemsPerPage) + 1;
   };
 
@@ -64,8 +63,8 @@ const PokeList = ({ state, onPageChange }: propType) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {state.detailedResults.map((pokemon) => (
-              <PokemonRow key={pokemon.id} pokemon={pokemon} />
+            {state.result.map((pokemon, index) => (
+              <PokemonRow key={index} pokemon={pokemon} />
             ))}
           </TableBody>
         </Table>

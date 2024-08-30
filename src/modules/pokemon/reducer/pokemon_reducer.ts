@@ -17,11 +17,12 @@ const PokemonReducer: Reducer<PokemonInitStateType, ReducerActionType> = (
         result: results,
         detailedResults: [],
       };
-    case "POKEMON_DETAILS_SUCCESS":
+    case "POKEMON_DETAILS_SUCCESS": {
       return {
         ...state,
         detailedResults: action.data,
       };
+    }
     default: {
       return state;
     }

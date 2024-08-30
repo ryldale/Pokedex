@@ -13,19 +13,6 @@ export const PokemonInitData = (
     .then((res: AxiosResponse) => {
       console.log(res.data);
       dispatch({ type: "POKEMON_DATA", data: { axiosData: res } });
-
-      const pokemonDetailsPromises = res.data.results.map((pokemon: Pokemon) =>
-        pokemonAPI.get(pokemon.url)
-      );
-
-      Promise.all(pokemonDetailsPromises)
-        .then((responses) => {
-          const detailedData = responses.map((response) => response.data);
-          dispatch({ type: "POKEMON_DETAILS_SUCCESS", data: detailedData });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     })
     .catch((err) => {
       console.log(err);

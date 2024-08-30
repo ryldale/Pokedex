@@ -12,6 +12,5 @@ export const pokemonAPI = axios.create({
     "Content-Type": "application/json",
   },
 });
-console.log(pokemonAPI);
 
 
