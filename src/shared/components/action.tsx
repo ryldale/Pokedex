@@ -8,9 +8,10 @@ type propType = {
   anchorEl: null | HTMLElement;
   open: boolean;
   handleClose: () => void;
+  onViewClick: () => void;
 };
 
-const ActionMenu = ({ anchorEl, open, handleClose }: propType) => {
+const ActionMenu = ({ anchorEl, open, handleClose, onViewClick }: propType) => {
   return (
     <Menu
       id="pokemon-menu"
@@ -18,7 +19,7 @@ const ActionMenu = ({ anchorEl, open, handleClose }: propType) => {
       open={open}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={onViewClick}>
         <ArrowTopRightOnSquareIcon
           width={"1.5rem"}
           height={"1.5rem"}

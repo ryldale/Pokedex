@@ -5,6 +5,7 @@ import ActionMenu from "@/shared/components/action";
 import { ItemDetails } from "../reducer/item_init";
 import { formatName } from "@/shared/components/formatname";
 import { color } from "@/shared/constant/color";
+import ViewModal from "./view-modal";
 
 type propType = {
   item: ItemDetails;
@@ -12,9 +13,9 @@ type propType = {
 
 const ItemRow = ({ item }: propType) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log("Item Name:", item.name);
     setAnchorEl(event.currentTarget);
   };
 
@@ -22,33 +23,54 @@ const ItemRow = ({ item }: propType) => {
     setAnchorEl(null);
   };
 
+  const handleViewClick = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
   const open = Boolean(anchorEl);
   const effect = item.effect_entries.map((effect) => effect.short_effect);
 
   return (
-    <TableRow key={item.id}>
-      <TableCell style={{ width: "5%" }}>
-        <img
-          src={item.sprites.default}
-          alt={item.name}
-          width={50}
-          height={50}
-          style={{
-            border: `1px solid ${color.n3}`,
-            background: `${color.n1}`,
-            borderRadius: "4px",
-          }}
+    <>
+      {isModalOpen && (
+        <ViewModal
+          item={item}
+          effect={effect}
+          closeHandler={handleModalClose}
         />
-      </TableCell>
-      <TableCell style={{ width: "10%" }}>{formatName(item.name)}</TableCell>
-      <TableCell style={{ width: "80%" }}>{effect}</TableCell>
-      <TableCell style={{ width: "5%" }}>
-        <IconButton onClick={handleClick}>
-          <EllipsisHorizontalCircleIcon width={"1.5rem"} height={"1.5rem"} />
-        </IconButton>
-        <ActionMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
-      </TableCell>
-    </TableRow>
+      )}
+      <TableRow key={item.id}>
+        <TableCell style={{ width: "5%" }}>
+          <img
+            src={item.sprites.default}
+            alt={item.name}
+            width={50}
+            height={50}
+            style={{
+              border: `1px solid ${color.n3}`,
+              background: `${color.n1}`,
+              borderRadius: "4px",
+            }}
+          />
+        </TableCell>
+        <TableCell style={{ width: "10%" }}>{formatName(item.name)}</TableCell>
+        <TableCell style={{ width: "80%" }}>{effect}</TableCell>
+        <TableCell style={{ width: "5%" }}>
+          <IconButton onClick={handleClick}>
+            <EllipsisHorizontalCircleIcon width={"1.5rem"} height={"1.5rem"} />
+          </IconButton>
+          <ActionMenu
+            anchorEl={anchorEl}
+            open={open}
+            handleClose={handleClose}
+            onViewClick={handleViewClick}
+          />
+        </TableCell>
+      </TableRow>
+    </>
   );
 };
 

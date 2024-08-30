@@ -31,6 +31,19 @@ const PokedexModal = ({
         maxWidth={"40rem"}
         maxHeight={"40rem"}
       >
+        {header && (
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            padding={"1rem"}
+            sx={{ background: color.primary }}
+          >
+            <Typography variant="h2" color={color.n1}>
+              {header}
+            </Typography>
+          </Box>
+        )}
         <Box padding={"1.5rem 1rem"} sx={{ overflowY: "auto" }}>
           {content}
         </Box>

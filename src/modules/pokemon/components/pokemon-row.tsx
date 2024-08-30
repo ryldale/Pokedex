@@ -22,6 +22,10 @@ const PokemonRow = ({ pokemon }: propType) => {
     setAnchorEl(null);
   };
 
+  const handleViewClick = () => {
+    console.log("awit");
+  };
+
   const open = Boolean(anchorEl);
 
   return (
@@ -49,7 +53,12 @@ const PokemonRow = ({ pokemon }: propType) => {
         <IconButton onClick={handleClick}>
           <EllipsisHorizontalCircleIcon width={"1.5rem"} height={"1.5rem"} />
         </IconButton>
-        <ActionMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
+        <ActionMenu
+          anchorEl={anchorEl}
+          open={open}
+          onViewClick={handleViewClick}
+          handleClose={handleClose}
+        />
       </TableCell>
     </TableRow>
   );

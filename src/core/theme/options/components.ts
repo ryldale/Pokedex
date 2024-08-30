@@ -24,7 +24,7 @@ export const component: Components<Omit<Theme, "components">> = {
         },
       },
       root: {
-        borderRadius: "0.5rem",
+        borderRadius: "0.125rem",
         padding: "0.8rem 1rem",
         textTransform: "unset",
       },
@@ -158,6 +158,18 @@ export const component: Components<Omit<Theme, "components">> = {
       root: {
         padding: "0.8rem 1rem",
         border: "none",
+      },
+    },
+  },
+  // =================================================
+  //  Modal
+  // =================================================
+  MuiModal: {
+    styleOverrides: {
+      root: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       },
     },
   },
