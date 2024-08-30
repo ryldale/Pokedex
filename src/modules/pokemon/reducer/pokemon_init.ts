@@ -30,6 +30,7 @@ export type PokemonDetails = {
   weight: number;
   stats: BaseStats[];
   abilities: Ability[];
+  cries: { latest: string, legacy: string };
 };
 
 export type BaseStats = {

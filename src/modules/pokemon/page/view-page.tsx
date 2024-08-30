@@ -122,7 +122,12 @@ const PokemonViewPage = () => {
             </Button>
           </Box>
         </Box>
-        <Box>
+        <Box
+          pb={"32px"}
+          borderBottom={"2px dashed"}
+          borderColor="divider"
+          borderRadius={1}
+        >
           <Typography variant="h2">Base Stats</Typography>
           {pokemonData?.stats.map((stats) => (
             <Box
@@ -155,7 +160,15 @@ const PokemonViewPage = () => {
             </Box>
           </Box>
         </Box>
-        <Box></Box>
+        <Box>
+          <Typography variant="h2">Base Stats</Typography>
+          <audio controls key={pokemonData?.cries.latest}>
+            <source src={pokemonData?.cries.latest} type="audio/ogg" />
+          </audio>
+          <audio controls key={pokemonData?.cries.legacy}>
+            <source src={pokemonData?.cries.legacy} type="audio/ogg" />
+          </audio>
+        </Box>
       </BaseContainer>
     </>
   );
