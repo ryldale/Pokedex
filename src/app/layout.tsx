@@ -17,17 +17,19 @@ export default function RootLayout({
     <html lang="en">
       <body
         style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
           backgroundImage: `url('/img/Background.png')`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           margin: 0,
-          height: "100%",
           padding: "40px 32px 24px 32px",
         }}
       >
         <CssBaseline />
-        <MUITheme hideNavbar={hideNavbar }>{children}</MUITheme>
+        <MUITheme hideNavbar={hideNavbar}>{children}</MUITheme>
       </body>
     </html>
   );

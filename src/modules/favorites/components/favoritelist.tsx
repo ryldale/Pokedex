@@ -3,7 +3,7 @@ import { color } from "@/shared/constant/color";
 import { Box, Grid, IconButton, Pagination, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { Favorite } from "@/modules/pokemon/types/pokemon-table_types";
 import { ConfirmModal, StatusModal } from "./modal";
 import { formatName } from "@/shared/components/formatname";
@@ -14,7 +14,7 @@ const FavoriteList = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState<boolean>(false);
   const [item, setItem] = useState<Favorite | null>(null);
-  const itemsPerPage = 10;
+  const itemsPerPage = 24;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -29,17 +29,26 @@ const FavoriteList = () => {
       ),
     ])
       .then(([pokemonRes, itemRes]) => {
-        const pokemonFavorites = Object.keys(pokemonRes.data || {}).map(
-          (key) => ({
-            id: key,
-            ...pokemonRes.data[key],
-            type: "pokemon",
-          })
-        );
+        const pokemonData = pokemonRes.data || {};
+        const itemData = itemRes.data || {};
 
-        const itemFavorites = Object.keys(itemRes.data || {}).map((key) => ({
+        const pokemonKeys = Object.keys(pokemonData).filter(
+          (key) => pokemonData[key]
+        );
+        const itemKeys = Object.keys(itemData).filter((key) => itemData[key]);
+
+        console.log(`Number of Pokemon favorites: ${pokemonKeys.length}`);
+        console.log(`Number of Item favorites: ${itemKeys.length}`);
+
+        const pokemonFavorites = pokemonKeys.map((key) => ({
           id: key,
-          ...itemRes.data[key],
+          ...pokemonData[key],
+          type: "pokemon",
+        }));
+
+        const itemFavorites = itemKeys.map((key) => ({
+          id: key,
+          ...itemData[key],
           type: "item",
         }));
 
@@ -61,6 +70,7 @@ const FavoriteList = () => {
     setItem(favoriteItem || null);
     setIsConfirmModalOpen(true);
   };
+
   const handleConfirm = () => {
     if (item) {
       const controller = new AbortController();
@@ -108,6 +118,9 @@ const FavoriteList = () => {
     return favorite.name || "Unknown Name";
   };
 
+  const totalItems = favorites.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   return (
     <>
       {isConfirmModalOpen && item && (
@@ -124,48 +137,60 @@ const FavoriteList = () => {
           name={getName(item)}
         />
       )}
-      <Grid container spacing={2}>
-        {paginatedFavorites.map((favorite, index) => (
-          <Grid key={index} item xs={2}>
-            <Box
-              padding={"0.375rem"}
-              sx={{
-                height: 150,
-                width: 200,
-                border: `1px solid ${color.n3}`,
-                borderRadius: "4px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-                overflow: "hidden",
-              }}
-            >
-              <IconButton
-                onClick={() =>
-                  handleDeleteFavorite(String(favorite.id), favorite.type)
-                }
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  color: "gold",
+      <Box
+        sx={{
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            width: 0,
+            background: "transparent",
+          },
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        <Grid container spacing={2}>
+          {paginatedFavorites.map((favorite, index) => (
+            <Grid key={index} item xs={2}>
+              <Box
+                padding={"0.375rem"}
+                sx={{
+                  border: `1px solid ${color.n3}`,
+                  borderRadius: "4px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
-                <StarIcon width={"1.5rem"} height={"1.5rem"} />
-              </IconButton>
-              <img
-                src={favorite.sprite}
-                alt={favorite.name}
-                style={{ width: "100px", height: "auto" }}
-              />
-              <Typography variant="body1">{favorite.id}</Typography>
-              <Typography variant="h3">{formatName(favorite.name)}</Typography>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+                <IconButton
+                  onClick={() =>
+                    handleDeleteFavorite(String(favorite.id), favorite.type)
+                  }
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    color: "gold",
+                  }}
+                >
+                  <StarIcon width={"1.5rem"} height={"1.5rem"} />
+                </IconButton>
+                <img
+                  src={favorite.sprite}
+                  alt={favorite.name}
+                  style={{ width: "100px", height: "auto" }}
+                />
+                <Typography variant="body1">{favorite.id}</Typography>
+                <Typography variant="h3">
+                  {formatName(favorite.name)}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
 
       <Box
         display={"flex"}
@@ -186,8 +211,8 @@ const FavoriteList = () => {
           </Typography>
         </Box>
         <Pagination
-          count={Math.ceil(favorites.length / itemsPerPage)}
-          page={page}
+          count={totalPages}
+          page={Math.min(page, totalPages)}
           onChange={handlePageChange}
         />
       </Box>
