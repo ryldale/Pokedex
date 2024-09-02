@@ -13,38 +13,60 @@ const FavoriteList = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    axios
-      .get(
-        "https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/favorites.json",
+    Promise.all([
+      axios.get(
+        "https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/pokemon/favorites.json",
         { signal: controller.signal }
-      )
-      .then((res: AxiosResponse) => {
-        const favoritesData = Object.keys(res.data)
-          .map((key) => ({ id: key, ...res.data[key] }))
-          .filter((item) => item && item.name && item.sprite);
+      ),
+      axios.get(
+        "https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/item/favorites.json",
+        { signal: controller.signal }
+      ),
+    ])
+      .then(([pokemonRes, itemRes]) => {
+        console.log("Pokemon Response:", pokemonRes.data);
+        console.log("Item Response:", itemRes.data);
 
-        setFavorites(favoritesData);
+        const pokemonFavorites = Object.keys(pokemonRes.data || {}).map(
+          (key) => ({
+            id: key,
+            ...pokemonRes.data[key],
+            type: "pokemon",
+          })
+        );
+
+        const itemFavorites = Object.keys(itemRes.data || {}).map((key) => ({
+          id: key,
+          ...itemRes.data[key],
+          type: "item",
+        }));
+
+        setFavorites([...pokemonFavorites, ...itemFavorites]);
       })
-      .catch((err: any) => {});
+      .catch((err) => {
+        console.error("Error fetching favorites:", err);
+      });
 
     return () => {
       controller.abort();
     };
   }, []);
 
-  const handleDeleteFavorite = (id: string) => {
+  const handleDeleteFavorite = (id: string, type: "pokemon" | "item") => {
     const controller = new AbortController();
     axios
       .delete(
-        `https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/favorites/${id}.json`,
+        `https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/${type}/favorites/${id}.json`,
         { signal: controller.signal }
       )
       .then(() => {
         setFavorites((prevFavorites) =>
-          prevFavorites.filter((favorite) => String(favorite.id) !== id)
+          prevFavorites.filter(
+            (favorite) => String(favorite.id) !== id || favorite.type !== type
+          )
         );
       })
-      .catch((err: any) => {
+      .catch((err) => {
         console.error("Error deleting favorite:", err);
       });
 
@@ -52,7 +74,6 @@ const FavoriteList = () => {
       controller.abort();
     };
   };
-
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -60,10 +81,9 @@ const FavoriteList = () => {
     setPage(value);
   };
 
-  const paginatedFavorites = favorites.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  const paginatedFavorites = favorites
+    .filter((fav) => fav && fav.sprite)
+    .slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
     <>
@@ -86,7 +106,9 @@ const FavoriteList = () => {
               }}
             >
               <IconButton
-                onClick={() => handleDeleteFavorite(String(favorite.id))}
+                onClick={() =>
+                  handleDeleteFavorite(String(favorite.id), favorite.type)
+                }
                 style={{
                   position: "absolute",
                   top: 0,

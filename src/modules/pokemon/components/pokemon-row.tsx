@@ -10,7 +10,8 @@ import { pokemonAPI } from "@/core/api/api";
 import { AxiosResponse } from "axios";
 import { ref, set } from "firebase/database";
 import { database } from "../../../../firebaseConfig";
-import { markAsFavorite } from "@/shared/functions/markasfavorite";
+import { ConfirmModal, StatusModal } from "./modal";
+import { markAsFavorite } from "../functions/markasfavorite";
 
 type propType = {
   pokemon: Pokemon;
@@ -22,6 +23,8 @@ const PokemonRow = ({ pokemon }: propType) => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetails | null>(
     null
   );
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -50,46 +53,73 @@ const PokemonRow = ({ pokemon }: propType) => {
     router.push(`/pokemons/${pokemonDetails?.id}`);
   };
 
-  const handleMarkAsFavorite = async () => {
+  const handleMarkAsFavorite = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirm = async () => {
     await markAsFavorite(pokemonDetails, pokemon.name);
+    setIsConfirmModalOpen(false);
+    setIsStatusModalOpen(true);
+  };
+
+  const handleStatusClose = () => {
+    setIsStatusModalOpen(false);
   };
 
   const open = Boolean(anchorEl);
 
   return (
-    <TableRow>
-      <TableCell style={{ width: "5%" }}>
-        <img
-          src={pokemonDetails?.sprites.front_default}
-          alt={pokemon.name}
-          width={50}
-          height={50}
-          style={{
-            border: `1px solid ${color.n3}`,
-            background: `${color.n1}`,
-            borderRadius: "4px",
-          }}
+    <>
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          closeHandler={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleConfirm}
+          pokemonName={pokemon.name}
         />
-      </TableCell>
-      <TableCell style={{ width: "45%" }}>
-        <Typography variant="body1">{formatName(pokemon.name)}</Typography>
-      </TableCell>
-      <TableCell style={{ width: "45%" }}>
-        <Typography variant="body1">{pokemonDetails?.weight} kg</Typography>
-      </TableCell>
-      <TableCell style={{ width: "5%" }}>
-        <IconButton onClick={handleClick}>
-          <EllipsisHorizontalCircleIcon width={"1.5rem"} height={"1.5rem"} />
-        </IconButton>
-        <ActionMenu
-          anchorEl={anchorEl}
-          open={open}
-          onMarkAsFavorite={handleMarkAsFavorite}
-          onViewClick={handleViewClick}
-          handleClose={handleClose}
+      )}
+
+      {isStatusModalOpen && (
+        <StatusModal
+          closeHandler={handleStatusClose}
+          onConfirm={handleStatusClose}
+          pokemonName={pokemon.name}
         />
-      </TableCell>
-    </TableRow>
+      )}
+      <TableRow>
+        <TableCell style={{ width: "5%" }}>
+          <img
+            src={pokemonDetails?.sprites.front_default}
+            alt={pokemon.name}
+            width={50}
+            height={50}
+            style={{
+              border: `1px solid ${color.n3}`,
+              background: `${color.n1}`,
+              borderRadius: "4px",
+            }}
+          />
+        </TableCell>
+        <TableCell style={{ width: "45%" }}>
+          <Typography variant="body1">{formatName(pokemon.name)}</Typography>
+        </TableCell>
+        <TableCell style={{ width: "45%" }}>
+          <Typography variant="body1">{pokemonDetails?.weight} kg</Typography>
+        </TableCell>
+        <TableCell style={{ width: "5%" }}>
+          <IconButton onClick={handleClick}>
+            <EllipsisHorizontalCircleIcon width={"1.5rem"} height={"1.5rem"} />
+          </IconButton>
+          <ActionMenu
+            anchorEl={anchorEl}
+            open={open}
+            onMarkAsFavorite={handleMarkAsFavorite}
+            onViewClick={handleViewClick}
+            handleClose={handleClose}
+          />
+        </TableCell>
+      </TableRow>
+    </>
   );
 };
 

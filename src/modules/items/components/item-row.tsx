@@ -6,6 +6,8 @@ import { ItemDetails } from "../reducer/item_init";
 import { formatName } from "@/shared/components/formatname";
 import { color } from "@/shared/constant/color";
 import ViewModal from "./view-modal";
+import { ConfirmModal, StatusModal } from "./modal";
+import { markAsFavorite } from "../functions/markasfavorite";
 
 type propType = {
   item: ItemDetails;
@@ -14,6 +16,8 @@ type propType = {
 const ItemRow = ({ item }: propType) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -31,8 +35,18 @@ const ItemRow = ({ item }: propType) => {
     setModalOpen(false);
   };
 
-  const handleMarkAsFavotire = () => {
-    console.log("mark as favorite");
+  const handleMarkAsFavorite = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirm = async () => {
+    await markAsFavorite(item, item.name);
+    setIsConfirmModalOpen(false);
+    setIsStatusModalOpen(true);
+  };
+
+  const handleStatusClose = () => {
+    setIsStatusModalOpen(false);
   };
   const open = Boolean(anchorEl);
   const effect = item.effect_entries.map((effect) => effect.short_effect);
@@ -44,6 +58,21 @@ const ItemRow = ({ item }: propType) => {
           item={item}
           effect={effect}
           closeHandler={handleModalClose}
+        />
+      )}
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          closeHandler={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleConfirm}
+          itemName={item.name}
+        />
+      )}
+
+      {isStatusModalOpen && (
+        <StatusModal
+          closeHandler={handleStatusClose}
+          onConfirm={handleStatusClose}
+          itemName={item.name}
         />
       )}
       <TableRow key={item.id}>
@@ -69,7 +98,7 @@ const ItemRow = ({ item }: propType) => {
           <ActionMenu
             anchorEl={anchorEl}
             open={open}
-            onMarkAsFavorite={handleMarkAsFavotire}
+            onMarkAsFavorite={handleMarkAsFavorite}
             handleClose={handleClose}
             onViewClick={handleViewClick}
           />

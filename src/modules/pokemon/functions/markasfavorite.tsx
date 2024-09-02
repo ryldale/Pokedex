@@ -1,5 +1,5 @@
 import { ref, set } from "firebase/database";
-import { database } from "../../../firebaseConfig";
+import { database } from "../../../../firebaseConfig";
 import { PokemonDetails } from "@/modules/pokemon/reducer/pokemon_init";
 
 export const markAsFavorite = async (
@@ -7,7 +7,7 @@ export const markAsFavorite = async (
   pokemonName: string
 ) => {
   try {
-    const favoritesRef = ref(database, `favorites/${pokemonDetails?.id}`);
+    const favoritesRef = ref(database, `pokemon/favorites/${pokemonDetails?.id}`);
     await set(favoritesRef, {
       id: pokemonDetails?.id,
       name: pokemonName,

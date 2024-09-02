@@ -8,10 +8,10 @@ import { Box, Button, Typography } from "@mui/material";
 type propType = {
   closeHandler: () => void;
   onConfirm: () => void;
-  pokemonName: string;
+  itemName: string;
 };
 
-export const ConfirmModal = ({ closeHandler, onConfirm, pokemonName }: propType) => {
+export const ConfirmModal = ({ closeHandler, onConfirm, itemName }: propType) => {
   return (
     <PokedexModal
       state={true}
@@ -38,7 +38,7 @@ export const ConfirmModal = ({ closeHandler, onConfirm, pokemonName }: propType)
             Mark as Favorite?
           </Typography>
           <Typography>
-            Do you want to add '<strong>{formatName(pokemonName)}</strong>' to your favorites?
+            Do you want to add '<strong>{formatName(itemName)}</strong>' to your favorites?
           </Typography>
         </Box>
       }
@@ -70,7 +70,7 @@ export const ConfirmModal = ({ closeHandler, onConfirm, pokemonName }: propType)
   );
 };
 
-export const StatusModal = ({ closeHandler, onConfirm, pokemonName }: propType) => {
+export const StatusModal = ({ closeHandler, onConfirm, itemName }: propType) => {
   return (
     <PokedexModal
       state={true}
@@ -97,7 +97,7 @@ export const StatusModal = ({ closeHandler, onConfirm, pokemonName }: propType) 
             Added to Favorites!
           </Typography>
           <Typography>
-            '<strong>{formatName(pokemonName)}</strong>' has been successfully added to your
+            '<strong>{formatName(itemName)}</strong>' has been successfully added to your
             favorites.
           </Typography>
         </Box>

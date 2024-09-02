@@ -10,13 +10,16 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PokemonDetails } from "../reducer/pokemon_init";
 import { formatName } from "@/shared/components/formatname";
-import { markAsFavorite } from "@/shared/functions/markasfavorite";
+import { markAsFavorite } from "../functions/markasfavorite";
+import { ConfirmModal, StatusModal } from "../components/modal";
 
 const PokemonViewPage = () => {
   const router = useRouter();
   const { id } = useParams();
 
   const [pokemonData, setPokemonData] = useState<PokemonDetails | null>(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -41,12 +44,36 @@ const PokemonViewPage = () => {
   };
   const totalStats = pokemonData ? calculateTotalStats(pokemonData.stats) : 0;
 
-  const handleMarkAsFavorite = async () => {
-    await markAsFavorite(pokemonData, pokemonData?.name || "Unknown Pokémon");
+  const handleMarkAsFavorite = () => {
+    setIsConfirmModalOpen(true);
   };
 
+  const handleConfirm = async () => {
+    await markAsFavorite(pokemonData, pokemonData?.name || "Unknown Pokémon");
+    setIsConfirmModalOpen(false);
+    setIsStatusModalOpen(true);
+  };
+
+  const handleStatusClose = () => {
+    setIsStatusModalOpen(false);
+  };
   return (
     <>
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          closeHandler={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleConfirm}
+          pokemonName={pokemonData?.name || "Unknown Pokémon"}
+        />
+      )}
+
+      {isStatusModalOpen && (
+        <StatusModal
+          closeHandler={handleStatusClose}
+          onConfirm={handleStatusClose}
+          pokemonName={pokemonData?.name || "Unknown Pokémon"}
+        />
+      )}
       <BaseContainer
         display={"flex"}
         padding={"20px 16px"}
