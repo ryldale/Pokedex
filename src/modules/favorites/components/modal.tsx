@@ -2,17 +2,23 @@
 import { formatName } from "@/shared/components/formatname";
 import PokedexModal from "@/shared/components/PokedexModal";
 import { color } from "@/shared/constant/color";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { CheckIcon } from "@heroicons/react/24/solid";
+import {
+  CheckIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 import { Box, Button, Typography } from "@mui/material";
 
 type propType = {
   closeHandler: () => void;
   onConfirm: () => void;
-  itemName: string;
+  name: string;
 };
 
-export const ConfirmModal = ({ closeHandler, onConfirm, itemName }: propType) => {
+export const ConfirmModal = ({
+  closeHandler,
+  onConfirm,
+  name,
+}: propType) => {
   return (
     <PokedexModal
       state={true}
@@ -26,20 +32,21 @@ export const ConfirmModal = ({ closeHandler, onConfirm, itemName }: propType) =>
           gap={"1rem"}
         >
           <ExclamationTriangleIcon
-            color={color.warning}
+            color={color.error}
             style={{
               borderRadius: "100%",
-              background: color.lightYellow,
+              background: color.lightRed,
               padding: "8px",
             }}
             width={"2.5rem"}
             height={"2.5rem"}
           />
-          <Typography variant="h3" color={color.warning}>
-            Mark as Favorite?
+          <Typography variant="h3" color={color.error}>
+            Remove Pokémon from Favorites?
           </Typography>
           <Typography>
-            Do you want to add '<strong>{formatName(itemName)}</strong>' to your favorites?
+            Are you sure you want to remove '
+            <strong>{formatName(name)}</strong>' from your favorites?
           </Typography>
         </Box>
       }
@@ -52,7 +59,7 @@ export const ConfirmModal = ({ closeHandler, onConfirm, itemName }: propType) =>
           borderTop={`1px solid ${color.n3}`}
           padding={"1rem"}
           gap={"1rem"}
-          bgcolor={color.lightYellow}
+          bgcolor={color.lightRed}
         >
           <Button
             variant="text"
@@ -62,8 +69,8 @@ export const ConfirmModal = ({ closeHandler, onConfirm, itemName }: propType) =>
           >
             <Typography variant="h3">Cancel</Typography>
           </Button>
-          <Button variant="contained" color="warning" onClick={onConfirm}>
-            <Typography variant="h3">Confirm</Typography>
+          <Button variant="contained" color="error" onClick={onConfirm}>
+            <Typography variant="h3">Remove</Typography>
           </Button>
         </Box>
       }
@@ -71,7 +78,11 @@ export const ConfirmModal = ({ closeHandler, onConfirm, itemName }: propType) =>
   );
 };
 
-export const StatusModal = ({ closeHandler, onConfirm, itemName }: propType) => {
+export const StatusModal = ({
+  closeHandler,
+  onConfirm,
+  name,
+}: propType) => {
   return (
     <PokedexModal
       state={true}
@@ -95,11 +106,11 @@ export const StatusModal = ({ closeHandler, onConfirm, itemName }: propType) => 
             height={"2.5rem"}
           />
           <Typography variant="h3" color={color.success}>
-            Added to Favorites!
+            Pokémon Removed
           </Typography>
           <Typography>
-            '<strong>{formatName(itemName)}</strong>' has been successfully added to your
-            favorites.
+            '<strong>{formatName(name)}</strong>' has been successfully
+            removed from your favorites.
           </Typography>
         </Box>
       }

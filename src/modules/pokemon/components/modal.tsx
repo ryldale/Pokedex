@@ -3,6 +3,7 @@ import { formatName } from "@/shared/components/formatname";
 import PokedexModal from "@/shared/components/PokedexModal";
 import { color } from "@/shared/constant/color";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { CheckIcon } from "@heroicons/react/24/solid";
 import { Box, Button, Typography } from "@mui/material";
 
 type propType = {
@@ -83,7 +84,7 @@ export const StatusModal = ({ closeHandler, onConfirm, pokemonName }: propType) 
           alignItems={"center"}
           gap={"1rem"}
         >
-          <ExclamationTriangleIcon
+          <CheckIcon
             color={color.success}
             style={{
               borderRadius: "100%",

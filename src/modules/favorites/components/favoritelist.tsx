@@ -5,10 +5,15 @@ import React, { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import axios, { AxiosResponse } from "axios";
 import { Favorite } from "@/modules/pokemon/types/pokemon-table_types";
+import { ConfirmModal, StatusModal } from "./modal";
+import { formatName } from "@/shared/components/formatname";
 
 const FavoriteList = () => {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState<boolean>(false);
+  const [item, setItem] = useState<Favorite | null>(null);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -24,9 +29,6 @@ const FavoriteList = () => {
       ),
     ])
       .then(([pokemonRes, itemRes]) => {
-        console.log("Pokemon Response:", pokemonRes.data);
-        console.log("Item Response:", itemRes.data);
-
         const pokemonFavorites = Object.keys(pokemonRes.data || {}).map(
           (key) => ({
             id: key,
@@ -53,27 +55,44 @@ const FavoriteList = () => {
   }, []);
 
   const handleDeleteFavorite = (id: string, type: "pokemon" | "item") => {
-    const controller = new AbortController();
-    axios
-      .delete(
-        `https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/${type}/favorites/${id}.json`,
-        { signal: controller.signal }
-      )
-      .then(() => {
-        setFavorites((prevFavorites) =>
-          prevFavorites.filter(
-            (favorite) => String(favorite.id) !== id || favorite.type !== type
-          )
-        );
-      })
-      .catch((err) => {
-        console.error("Error deleting favorite:", err);
-      });
-
-    return () => {
-      controller.abort();
-    };
+    const favoriteItem = favorites.find(
+      (fav) => String(fav.id) === id && fav.type === type
+    );
+    setItem(favoriteItem || null);
+    setIsConfirmModalOpen(true);
   };
+  const handleConfirm = () => {
+    if (item) {
+      const controller = new AbortController();
+      axios
+        .delete(
+          `https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/${item.type}/favorites/${item.id}.json`,
+          { signal: controller.signal }
+        )
+        .then(() => {
+          setFavorites((prevFavorites) =>
+            prevFavorites.filter(
+              (favorite) =>
+                favorite.id !== item.id || favorite.type !== item.type
+            )
+          );
+          setIsConfirmModalOpen(false);
+          setIsStatusModalOpen(true);
+        })
+        .catch((err) => {
+          console.error("Error deleting favorite:", err);
+        });
+
+      return () => {
+        controller.abort();
+      };
+    }
+  };
+
+  const handleStatusClose = () => {
+    setIsStatusModalOpen(false);
+  };
+
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -85,8 +104,26 @@ const FavoriteList = () => {
     .filter((fav) => fav && fav.sprite)
     .slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
+  const getName = (favorite: Favorite) => {
+    return favorite.name || "Unknown Name";
+  };
+
   return (
     <>
+      {isConfirmModalOpen && item && (
+        <ConfirmModal
+          closeHandler={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleConfirm}
+          name={getName(item)}
+        />
+      )}
+      {isStatusModalOpen && item && (
+        <StatusModal
+          closeHandler={handleStatusClose}
+          onConfirm={handleStatusClose}
+          name={getName(item)}
+        />
+      )}
       <Grid container spacing={2}>
         {paginatedFavorites.map((favorite, index) => (
           <Grid key={index} item xs={2}>
@@ -124,7 +161,7 @@ const FavoriteList = () => {
                 style={{ width: "100px", height: "auto" }}
               />
               <Typography variant="body1">{favorite.id}</Typography>
-              <Typography variant="h3">{favorite.name}</Typography>
+              <Typography variant="h3">{formatName(favorite.name)}</Typography>
             </Box>
           </Grid>
         ))}
