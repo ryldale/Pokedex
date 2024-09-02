@@ -1,22 +1,74 @@
 "use client";
 import { color } from "@/shared/constant/color";
-import {
-  Box,
-  Grid,
-  IconButton,
-  Pagination,
-  Paper,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import { FavoritePokemons } from "../constant/sampledata";
+import { Box, Grid, IconButton, Pagination, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/24/solid";
+import axios, { AxiosResponse } from "axios";
+import { Favorite } from "@/modules/pokemon/types/pokemon-table_types";
 
 const FavoriteList = () => {
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    const controller = new AbortController();
+    axios
+      .get(
+        "https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/favorites.json",
+        { signal: controller.signal }
+      )
+      .then((res: AxiosResponse) => {
+        const favoritesData = Object.keys(res.data)
+          .map((key) => ({ id: key, ...res.data[key] }))
+          .filter((item) => item && item.name && item.sprite);
+
+        setFavorites(favoritesData);
+      })
+      .catch((err: any) => {});
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  const handleDeleteFavorite = (id: string) => {
+    const controller = new AbortController();
+    axios
+      .delete(
+        `https://pokedexdb-d9d0c-default-rtdb.firebaseio.com/favorites/${id}.json`,
+        { signal: controller.signal }
+      )
+      .then(() => {
+        setFavorites((prevFavorites) =>
+          prevFavorites.filter((favorite) => String(favorite.id) !== id)
+        );
+      })
+      .catch((err: any) => {
+        console.error("Error deleting favorite:", err);
+      });
+
+    return () => {
+      controller.abort();
+    };
+  };
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  const paginatedFavorites = favorites.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
   return (
     <>
       <Grid container spacing={2}>
-        {FavoritePokemons.map((favorite, index) => (
+        {paginatedFavorites.map((favorite, index) => (
           <Grid key={index} item xs={2}>
             <Box
               padding={"0.375rem"}
@@ -34,9 +86,7 @@ const FavoriteList = () => {
               }}
             >
               <IconButton
-                onClick={(e) => {
-                  console.log("Star Clicked");
-                }}
+                onClick={() => handleDeleteFavorite(String(favorite.id))}
                 style={{
                   position: "absolute",
                   top: 0,
@@ -51,7 +101,7 @@ const FavoriteList = () => {
                 alt={favorite.name}
                 style={{ width: "100px", height: "auto" }}
               />
-              <Typography variant="body1">{favorite.number}</Typography>
+              <Typography variant="body1">{favorite.id}</Typography>
               <Typography variant="h3">{favorite.name}</Typography>
             </Box>
           </Grid>
@@ -70,13 +120,16 @@ const FavoriteList = () => {
           alignItems={"center"}
         >
           <Typography variant="caption" color={color.primary}>
-            {`Showing ${`1`}  to ${`10`} of ${`100`} results`}
+            {`Showing ${(page - 1) * itemsPerPage + 1} to ${Math.min(
+              page * itemsPerPage,
+              favorites.length
+            )} of ${favorites.length} results`}
           </Typography>
         </Box>
         <Pagination
-          count={10}
-          page={1}
-          //   onChange={PageHandler}
+          count={Math.ceil(favorites.length / itemsPerPage)}
+          page={page}
+          onChange={handlePageChange}
         />
       </Box>
     </>

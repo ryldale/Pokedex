@@ -10,6 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PokemonDetails } from "../reducer/pokemon_init";
 import { formatName } from "@/shared/components/formatname";
+import { markAsFavorite } from "@/shared/functions/markasfavorite";
 
 const PokemonViewPage = () => {
   const router = useRouter();
@@ -39,6 +40,10 @@ const PokemonViewPage = () => {
     return stats.reduce((total: any, stat: any) => total + stat.base_stat, 0);
   };
   const totalStats = pokemonData ? calculateTotalStats(pokemonData.stats) : 0;
+
+  const handleMarkAsFavorite = async () => {
+    await markAsFavorite(pokemonData, pokemonData?.name || "Unknown Pokémon");
+  };
 
   return (
     <>
@@ -90,7 +95,7 @@ const PokemonViewPage = () => {
             >
               <img
                 src={pokemonData?.sprites.front_default}
-                alt="Bulbasaur"
+                alt={pokemonData?.name}
                 style={{ width: 175, height: "auto", objectFit: "cover" }}
               />
             </Box>
@@ -112,7 +117,7 @@ const PokemonViewPage = () => {
             </Box>
           </Box>
           <Box display={"flex"} alignItems={"start"}>
-            <Button variant="text">
+            <Button variant="text" onClick={handleMarkAsFavorite}>
               <StarIcon
                 width={"1.5rem"}
                 height={"1.5rem"}

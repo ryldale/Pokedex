@@ -1,6 +1,5 @@
-export type PokemonType = {
+export type Favorite = {
   id: number;
   sprite: string;
   name: string;
-  weight: string;
 };

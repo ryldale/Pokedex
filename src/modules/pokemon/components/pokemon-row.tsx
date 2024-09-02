@@ -2,13 +2,15 @@ import ActionMenu from "@/shared/components/action";
 import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/solid";
 import { IconButton, TableCell, TableRow, Typography } from "@mui/material";
 import React, { MouseEvent, useEffect, useState } from "react";
-import { PokemonType } from "../types/pokemon-table_types";
 import { Pokemon, PokemonDetails } from "../reducer/pokemon_init";
 import { color } from "@/shared/constant/color";
 import { formatName } from "@/shared/components/formatname";
 import { useRouter } from "next/navigation";
 import { pokemonAPI } from "@/core/api/api";
 import { AxiosResponse } from "axios";
+import { ref, set } from "firebase/database";
+import { database } from "../../../../firebaseConfig";
+import { markAsFavorite } from "@/shared/functions/markasfavorite";
 
 type propType = {
   pokemon: Pokemon;
@@ -48,8 +50,8 @@ const PokemonRow = ({ pokemon }: propType) => {
     router.push(`/pokemons/${pokemonDetails?.id}`);
   };
 
-  const handleMarkAsFavotire = () => {
-    console.log("mark as favorite");
+  const handleMarkAsFavorite = async () => {
+    await markAsFavorite(pokemonDetails, pokemon.name);
   };
 
   const open = Boolean(anchorEl);
@@ -82,7 +84,7 @@ const PokemonRow = ({ pokemon }: propType) => {
         <ActionMenu
           anchorEl={anchorEl}
           open={open}
-          onMarkAsFavorite={handleMarkAsFavotire}
+          onMarkAsFavorite={handleMarkAsFavorite}
           onViewClick={handleViewClick}
           handleClose={handleClose}
         />
